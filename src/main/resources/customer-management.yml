@@ -1,0 +1,116 @@
+swagger: '2.0'
+info: 
+  description: Customer management service 
+  version: 1.0.0
+  title: Customer management
+  license: 
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+host: localhost 
+
+paths:
+  '/customers': 
+    post: 
+      tags: 
+        - customers
+      summary: Create customer 
+      description: Creates a single Customer 
+      operationId: createCustomer
+      produces:
+        - application/json
+      parameters:
+      - name: customer
+        in: body
+        description: Default
+        required: true
+        schema:
+          $ref: '#/definitions/Customer'
+      responses: 
+        '201': 
+          description: Successfully Created 
+          schema:
+            type: integer
+        '400':
+          description: Invalid input
+        '404':
+          description: Not found
+        '500': 
+          description: Internal Server Error
+    get: 
+      tags: 
+        - customers
+      summary: Find all customers 
+      description: Returns list of Customer 
+      operationId: getAllCustomers 
+      produces:
+        - application/json 
+      responses: 
+        '200': 
+          description: Successful Operation 
+          schema:
+            $ref: '#/definitions/CustomerList' 
+        '400':
+          description: Invalid input
+        '404':
+          description: Not found
+        '500': 
+          description: Internal Server Error
+  '/customers/{customerId}': 
+    get: 
+      tags: 
+        - customers
+      summary: Find customer by ID 
+      description: Returns a single Customer 
+      operationId: getCustomerDetailsById 
+      produces:
+        - application/json 
+      parameters:
+        - name: customerId 
+          in: path 
+          description: ID of Customer to return 
+          required: true 
+          type: integer 
+      responses: 
+        '200': 
+          description: Successful Operation 
+          schema:
+            $ref: '#/definitions/Customer' 
+        '400':
+          description: Invalid input
+        '404':
+          description: Not found
+        '500': 
+          description: Internal Server Error
+
+definitions: 
+  Customer: 
+    type: object
+    required: 
+    - firstName
+    - phoneNumber
+    properties: 
+      customerId: 
+        type: integer
+      firstName: 
+        type: string
+        description: Customer First Name 
+      lastName: 
+        type: string
+        description: Customer Last Name
+      phoneNumber: 
+        type: string
+        description: Customer Phone Number
+      emailId: 
+        type: string
+        description: mail address
+        example: customer-id@example.com
+      creationDate: 
+        type: string
+        description: customer creation date 
+  CustomerList:
+    type: object
+    properties:
+      customers:
+        type: array
+        items:
+          $ref: '#/definitions/Customer'
